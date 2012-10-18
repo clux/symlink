@@ -11,8 +11,8 @@ Otherwise, it is most certainly not.
 Install and run with paths to the modules you would like to link together:
 
 ```bash
-$ npm install -g symlink
-$ symlink module1/ module2/ ..
+npm install -g symlink
+symlink module1/ module2/ module3/ ..
 ```
 
 ## WHAT DOES IT DO:
@@ -28,11 +28,10 @@ Once everything has been ordered, a bunch of child processes are executed in ser
 - foreignDeps[m].forEach (d) -> `npm install d`
 - `npm link`
 
-I.e. link in all local dependencies, install the rest, then link it so the modules with more inclusions can safely link it in.
+I.e. link in all local dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## TAP
-If you'd like to link tap to all modules that have it specified in the package.json
-specify a `-t` flag before listing module paths.
+If you'd like to link tap to all modules that have it specified in the package.json (instead of having it be installed at every module where it's listed as a foreign dependency) specify a `-t` flag before listing module paths.
 
 ## License
 MIT-Licensed. See LICENSE file for details.
