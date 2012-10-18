@@ -1,0 +1,31 @@
+{
+  "name": "symlink",
+  "version": "0.0.0",
+  "description": "npm link together local modules && npm install remaining dependencies",
+  "preferGlobal": true,
+  "bin": "symlink.js",
+  "dependencies": {
+    "interlude": "~0.7.0",
+    "async": "~0.1.22",
+    "optimist": "~0.3.5"
+  },
+  "devDependencies": {
+    "tap": "~0.3.1"
+  },
+  "scripts": {
+    "test": "tap ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/clux/symbolic.git"
+  },
+  "keywords": [
+    "link",
+    "install",
+    "dependency",
+    "analysis",
+    "personal"
+  ],
+  "author": "clux",
+  "license": "MIT"
+}
