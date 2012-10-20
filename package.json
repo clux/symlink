@@ -5,7 +5,7 @@
   "preferGlobal": true,
   "bin": "symlink.js",
   "dependencies": {
-    "interlude": "~0.7.0",
+    "interlude": "~1.0.0",
     "async": "~0.1.22",
     "optimist": "~0.3.5"
   },
@@ -22,6 +22,7 @@
   "keywords": [
     "link",
     "install",
+    "npm",
     "dependency",
     "analysis",
     "personal"
