@@ -1,6 +1,6 @@
 {
   "name": "symlink",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "npm link together local modules && npm install remaining dependencies",
   "preferGlobal": true,
   "bin": "symlink.js",
