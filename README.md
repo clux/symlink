@@ -132,7 +132,7 @@ symlink will figure out a safe order of commands and perform the following list 
 
 NB: This is with the [tap] option enabled.
 
-If you have a local/chowned install of node (such that creating a link to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
+If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
 
 ## License
 MIT-Licensed. See LICENSE file for details.

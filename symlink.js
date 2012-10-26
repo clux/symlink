@@ -45,10 +45,9 @@ var sorted = $.range(names.length).map(function () {
   return safe;
 });
 
-// store ordered to link these modules up
 var cmds = [];
 sorted.forEach(function (n) {
-  // find the directory the module is in by looking at the relative path given
+  // then find all commands required for each module in the found safe order
   var cd = 'cd ' + absPaths[n] + ' && ';
   var ignored = [];
 
