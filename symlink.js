@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 var join = require('path').join
   , $ = require('interlude')
+  , fs = require('fs')
   , cp = require('child_process')
-  , async = require('async');
+  , async = require('async')
+  , cwd = process.cwd();
 
 var argv = require('optimist')
-  .usage('Usage: $0 -t module1/ module2/ ...')
+  .usage('Usage: $0 -t -r repoFolder')
   .boolean('t')
+  .demand(['r'])
+  .describe('r', 'repoFolder')
   .argv;
 
 var deps = {}         // { module name -> [jsonDeps++jsonDevDeps] }
@@ -14,12 +18,16 @@ var deps = {}         // { module name -> [jsonDeps++jsonDevDeps] }
   , foreignDeps = {}  // deps not in names
   , absPaths = {};    // { module name -> abs module path }
 
-var names = argv._.map(function (m) {
-  var json = require(join(process.cwd(), m, 'package.json'))
+var dirs = fs.readdirSync(argv.r).filter(function(str) {
+  return fs.existsSync(join(cwd, argv.r, str, 'package.json'));
+});
+
+var names = dirs.map(function (m) {
+  var json = require(join(cwd, argv.r, m, 'package.json'))
     , name = json.name
     , mDeps = $.extend(json.dependencies || {}, json.devDependencies || {});
   deps[name] = Object.keys(mDeps);
-  absPaths[name] = join(process.cwd(), m);
+  absPaths[name] = join(cwd, argv.r, m);
   return name;
 });
 

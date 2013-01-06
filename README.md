@@ -8,11 +8,11 @@ If you answered YES to all the above, then this module is for you.
 Otherwise, it is most certainly not.
 
 ## Usage
-Install and run with paths to the modules you would like to link together:
+Install, then run in the directory containing all your repos that youd like to link together (will take all folders that contain a package.json)
 
 ```bash
 npm install -g symlink
-symlink module1/ module2/ module3/ ..
+symlink -r .
 ```
 
 ## WHAT DOES IT DO:
