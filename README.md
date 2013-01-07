@@ -12,7 +12,7 @@ Install, then run in the directory containing all your repos that youd like to l
 
 ```bash
 npm install -g symlink
-symlink -r .
+symlink -r repoDir
 ```
 
 ## WHAT DOES IT DO:
