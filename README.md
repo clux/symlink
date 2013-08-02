@@ -1,4 +1,4 @@
-# Symlink [![Build Status](https://secure.travis-ci.org/clux/symlink.png)](http://travis-ci.org/clux/symlink)
+# Symlink
 
 - Have lots of personal node modules?
 - `npm link` them all together?

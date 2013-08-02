@@ -9,12 +9,6 @@
     "async": "~0.1.22",
     "optimist": "~0.3.5"
   },
-  "devDependencies": {
-    "tap": "~0.3.1"
-  },
-  "scripts": {
-    "test": "tap ./test"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/clux/symlink.git"
