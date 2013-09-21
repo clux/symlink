@@ -1,4 +1,4 @@
-# Symlink
+# symlink [![Dependency Status](https://david-dm.org/clux/symlink.png)](https://david-dm.org/clux/symlink)
 
 - Have lots of personal node modules?
 - `npm link` them all together?

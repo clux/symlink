@@ -1,17 +1,12 @@
 {
   "name": "symlink",
-  "version": "0.1.0",
   "description": "npm link together local modules && npm install remaining dependencies",
+  "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
+  "version": "0.1.0",
   "preferGlobal": true,
-  "bin": "symlink.js",
-  "dependencies": {
-    "interlude": "~1.0.0",
-    "async": "~0.1.22",
-    "optimist": "~0.3.5"
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/clux/symlink.git"
+    "url": "clux/symlink"
   },
   "keywords": [
     "link",
@@ -21,6 +16,14 @@
     "analysis",
     "personal"
   ],
-  "author": "clux",
+  "bin": "symlink.js",
+  "dependencies": {
+    "interlude": "~1.0.0",
+    "async": "~0.1.22",
+    "optimist": "~0.3.5"
+  },
+  "bugs": {
+    "url": "http://github.com/clux/symlink/issues"
+  },
   "license": "MIT"
 }
