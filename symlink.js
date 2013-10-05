@@ -83,7 +83,7 @@ sorted.forEach(function (n) {
 });
 
 if (argv.d) { // dry run
-  return console.log(cmds);
+  return console.log(JSON.stringify(cmds, null, " "));
 }
 
 // create one cp function cmd that execs and cbs to next in async series
