@@ -65,7 +65,7 @@ sorted.forEach(function (n) {
   var cd = 'cd ' + absPaths[n] + ' && ';
 
   // if tap wanted global and the module uses it, link it to the module
-  var ignored = $.intersect(globals, deps[n]);
+  var ignored = $.intersect(globals, foreignDeps[n]);
   if (ignored.length > 0) {
     cmds.push(cd + 'npm link ' + ignored.join(' '));
   }
