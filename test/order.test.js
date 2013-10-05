@@ -2,7 +2,7 @@ var tap = require('tap')
   , test = tap.test
   , cp = require('child_process');
 
-var verify = function (t, flags, expected) {
+var verify = function (t, flags, output) {
   cp.exec('../symlink.js ' + flags, function (err, stdout, stderr) {
     if (err || stderr) {
       t.equal(err, null, "err executing");
@@ -12,11 +12,11 @@ var verify = function (t, flags, expected) {
       t.ok(stdout, flags + ' worked');
       var json = JSON.parse(stdout);
       t.ok(Array.isArray(json), 'array of output');
-      t.equal(json.length, expected.length, "same number of cmds");
-      for (var i = 0; i < json.length; i += 1) {
-        var endBit = json[i].match(/\/symlink\/(.*)/)[1];
-        t.equal(endBit, expected[i], "got expected line " + i);
-      }
+      t.equal(json.length, output.length, "same number of cmds");
+      var expected = json.map(function (l) {
+        return l.match(/\/symlink\/(.*)/)[1];
+      });
+      t.deepEqual(expected, output, "output deepEquals expected");
     }
     t.end();
   });
@@ -59,8 +59,7 @@ test("symlink-dry-run 2 globals", function (t) {
     "test/module2 && npm link global1",
     "test/module2 && npm install external1 external2",
     "test/module2 && npm link",
-    "test/module3 && npm link global2",
-    "test/module3 && npm link module2",
+    "test/module3 && npm link global2 module2",
     "test/module3 && npm link",
     "test/module1 && npm link module2 module3",
     "test/module1 && npm install external2",

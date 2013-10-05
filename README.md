@@ -24,9 +24,8 @@ symlink -r repoDir
 
 Once everything has been ordered, a bunch of child processes are executed in series for each module from the order of least inclusion;
 
-- `npm link (globals intersect foreignDeps)`
-- `npm link (internalDeps)`
-- `npm install (foreignDeps)`
+- `npm link ((globals ∩ foreignDeps) ∪ (internalDeps))`
+- `npm install (foreignDeps ∖ globals)`
 - `npm link`
 
 I.e. link in all local global and internal dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
@@ -57,11 +56,9 @@ kjttks@clux ~/repos $ symlink -r . -g tap -d
  "cd ./irc-stream && npm link",
  "cd ./operators && npm link tap",
  "cd ./operators && npm link",
- "cd ./autonomy && npm link tap",
- "cd ./autonomy && npm link operators",
+ "cd ./autonomy && npm link tap operators",
  "cd ./autonomy && npm link",
- "cd ./combustion && npm link tap",
- "cd ./combustion && npm link confortable fsx autonomy operators",
+ "cd ./combustion && npm link tap confortable fsx autonomy operators",
  "cd ./combustion && npm install optimist",
  "cd ./combustion && npm link",
  "cd ./sdp-transform && npm link tap",
@@ -72,47 +69,41 @@ kjttks@clux ~/repos $ symlink -r . -g tap -d
  "cd ./statesoftheworld && npm link",
  "cd ./subset && npm link tap",
  "cd ./subset && npm link",
- "cd ./curvefever-stats && npm link tap",
- "cd ./curvefever-stats && npm link subset confortable",
+ "cd ./curvefever-stats && npm link tap subset confortable",
  "cd ./curvefever-stats && npm install request cheerio async",
  "cd ./curvefever-stats && npm link",
- "cd ./interlude && npm link tap",
- "cd ./interlude && npm link autonomy subset operators",
+ "cd ./interlude && npm link tap autonomy subset operators",
  "cd ./interlude && npm link",
- "cd ./symlink && npm link tap",
- "cd ./symlink && npm link interlude",
+ "cd ./symlink && npm link tap interlude",
  "cd ./symlink && npm install async optimist",
  "cd ./symlink && npm link",
+ "cd ./testling-html-example && npm link",
+ "cd ./testling-server-example && npm install tape",
+ "cd ./testling-server-example && npm link",
  "cd ./topiary && npm link",
- "cd ./tournament && npm link tap",
- "cd ./tournament && npm link interlude",
+ "cd ./tournament && npm link tap interlude",
  "cd ./tournament && npm link",
  "cd ./tournament-components && npm link tournament",
  "cd ./tournament-components && npm install tape",
  "cd ./tournament-components && npm link",
  "cd ./trials && npm link tap",
  "cd ./trials && npm link",
- "cd ./dye && npm link tap",
- "cd ./dye && npm link trials subset",
+ "cd ./dye && npm link tap trials subset",
  "cd ./dye && npm link",
- "cd ./tub && npm link tap",
- "cd ./tub && npm link splitter",
+ "cd ./tub && npm link tap splitter",
  "cd ./tub && npm install dev-null",
  "cd ./tub && npm link",
  "cd ./typr && npm link tap",
  "cd ./typr && npm link",
- "cd ./logule && npm link tap",
- "cd ./logule && npm link dye autonomy subset confortable typr",
+ "cd ./logule && npm link tap dye autonomy subset confortable typr",
  "cd ./logule && npm link",
- "cd ./gu && npm link tap",
- "cd ./gu && npm link logule",
+ "cd ./gu && npm link tap logule",
  "cd ./gu && npm install hot-reload",
  "cd ./gu && npm link",
  "cd ./cleverbot-irc && npm link dye gu irc-stream confortable",
  "cd ./cleverbot-irc && npm install levenshtein cleverbot-node suncalc irc-colors",
  "cd ./cleverbot-irc && npm link",
- "cd ./curvefever-bot && npm link tap",
- "cd ./curvefever-bot && npm link curvefever-stats gu confortable",
+ "cd ./curvefever-bot && npm link tap curvefever-stats gu confortable",
  "cd ./curvefever-bot && npm link",
  "cd ./meshrtc && npm link logule",
  "cd ./meshrtc && npm install shoe emit-stream bean bonzo qwery domready ecstatic mux-demux pause-stream dnode browserify",
@@ -125,6 +116,7 @@ kjttks@clux ~/repos $ symlink -r . -g tap -d
  "cd ./wrappers && npm link tap",
  "cd ./wrappers && npm link"
 ]
+
 ```
 
 Without the `-d` flag, these commands would be executed in this order.
