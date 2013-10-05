@@ -63,25 +63,24 @@ var cmds = [];
 sorted.forEach(function (n) {
   // then find all commands required for each module in the found safe order
   var cd = 'cd ' + absPaths[n] + ' && ';
-  var ignored = [];
 
   // if tap wanted global and the module uses it, link it to the module
-  $.intersect(globals, deps[n]).forEach(function (g) {
-    if (deps[n].indexOf(g) >= 0) {
-      cmds.push(cd + 'npm link ' + g);
-      ignored.push(g);
-    }
-  });
+  var ignored = $.intersect(globals, deps[n]);
+  if (ignored.length > 0) {
+    cmds.push(cd + 'npm link ' + ignored.join(' '));
+  }
 
   // npm link everything in deps[n] to n
-  ownDeps[n].filter($.notElem(ignored)).forEach(function (sub) {
-    cmds.push(cd + 'npm link ' + sub);
-  });
+  var ownToLink = ownDeps[n].filter($.notElem(ignored));
+  if (ownToLink.length > 0) {
+    cmds.push(cd + 'npm link ' + ownToLink.join(' '));
+  }
 
   // npm install remaining deps
-  foreignDeps[n].filter($.notElem(ignored)).forEach(function (sub) {
-    cmds.push(cd + 'npm install ' + sub);
-  });
+  var remaining = foreignDeps[n].filter($.notElem(ignored));
+  if (remaining.length > 0) {
+    cmds.push(cd + 'npm install ' + remaining.join(' '));
+  }
 
   // npm link (to make this available to the modules with more dependencies)
   cmds.push(cd + 'npm link');

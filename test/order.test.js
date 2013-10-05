@@ -25,17 +25,14 @@ var verify = function (t, flags, expected) {
 test("symlink-dry-run 0 globals", function (t) {
   var flags = '-r . -d';
   var output = [
-    'test/module2 && npm install external1',
-    'test/module2 && npm install external2',
-    'test/module2 && npm install global1',
-    'test/module2 && npm link',
-    'test/module3 && npm link module2',
-    'test/module3 && npm install global2',
-    'test/module3 && npm link',
-    'test/module1 && npm link module2',
-    'test/module1 && npm link module3',
-    'test/module1 && npm install external2',
-    'test/module1 && npm link'
+    "test/module2 && npm install external1 external2 global1",
+    "test/module2 && npm link",
+    "test/module3 && npm link module2",
+    "test/module3 && npm install global2",
+    "test/module3 && npm link",
+    "test/module1 && npm link module2 module3",
+    "test/module1 && npm install external2",
+    "test/module1 && npm link"
   ];
   verify(t, flags, output);
 });
@@ -43,17 +40,15 @@ test("symlink-dry-run 0 globals", function (t) {
 test("symlink-dry-run 1 global", function (t) {
   var flags = '-r . -d -g global1';
   var output = [
-    'test/module2 && npm link global1',
-    'test/module2 && npm install external1',
-    'test/module2 && npm install external2',
-    'test/module2 && npm link',
-    'test/module3 && npm link module2',
-    'test/module3 && npm install global2',
-    'test/module3 && npm link',
-    'test/module1 && npm link module2',
-    'test/module1 && npm link module3',
-    'test/module1 && npm install external2',
-    'test/module1 && npm link'
+    "test/module2 && npm link global1",
+    "test/module2 && npm install external1 external2",
+    "test/module2 && npm link",
+    "test/module3 && npm link module2",
+    "test/module3 && npm install global2",
+    "test/module3 && npm link",
+    "test/module1 && npm link module2 module3",
+    "test/module1 && npm install external2",
+    "test/module1 && npm link"
   ];
   verify(t, flags, output);
 });
@@ -61,17 +56,15 @@ test("symlink-dry-run 1 global", function (t) {
 test("symlink-dry-run 2 globals", function (t) {
   var flags = '-r . -d -g global1 -g global2';
   var output = [
-    'test/module2 && npm link global1',
-    'test/module2 && npm install external1',
-    'test/module2 && npm install external2',
-    'test/module2 && npm link',
-    'test/module3 && npm link global2',
-    'test/module3 && npm link module2',
-    'test/module3 && npm link',
-    'test/module1 && npm link module2',
-    'test/module1 && npm link module3',
-    'test/module1 && npm install external2',
-    'test/module1 && npm link'
+    "test/module2 && npm link global1",
+    "test/module2 && npm install external1 external2",
+    "test/module2 && npm link",
+    "test/module3 && npm link global2",
+    "test/module3 && npm link module2",
+    "test/module3 && npm link",
+    "test/module1 && npm link module2 module3",
+    "test/module1 && npm install external2",
+    "test/module1 && npm link"
   ];
   verify(t, flags, output);
 });
