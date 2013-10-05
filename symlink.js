@@ -8,8 +8,7 @@ var join = require('path').join
 
 var argv = require('optimist')
   .usage('Usage: $0 [-td] -r repoFolder')
-  .boolean('t')
-  .describe('t', 'link-tap')
+  .describe('g', 'globally-link')
   .boolean('d')
   .describe('d', 'dry-run')
   .demand(['r'])
@@ -20,6 +19,10 @@ var deps = {}         // { module name -> [jsonDeps++jsonDevDeps] }
   , ownDeps = {}      // deps in names
   , foreignDeps = {}  // deps not in names
   , absPaths = {};    // { module name -> abs module path }
+
+var globals = argv.g ?
+  (Array.isArray(argv.g) ? argv.g : [argv.g]):
+  [];
 
 var dirs = fs.readdirSync(argv.r).filter(function(str) {
   return fs.existsSync(join(cwd, argv.r, str, 'package.json'));
@@ -63,10 +66,12 @@ sorted.forEach(function (n) {
   var ignored = [];
 
   // if tap wanted global and the module uses it, link it to the module
-  if (argv.t && deps[n].indexOf('tap') >= 0) {
-    cmds.push(cd + 'npm link tap');
-    ignored.push('tap');
-  }
+  $.intersect(globals, deps[n]).forEach(function (g) {
+    if (deps[n].indexOf(g) >= 0) {
+      cmds.push(cd + 'npm link ' + g);
+      ignored.push(g);
+    }
+  });
 
   // npm link everything in deps[n] to n
   ownDeps[n].filter($.notElem(ignored)).forEach(function (sub) {
