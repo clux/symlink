@@ -3,6 +3,8 @@ var tap = require('tap')
   , cp = require('child_process');
 
 var expected = [
+  'test/module2 && npm install external1',
+  'test/module2 && npm install external2',
   'test/module2 && npm link',
   'test/module3 && npm link module2',
   'test/module3 && npm link',

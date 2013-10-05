@@ -1,4 +1,7 @@
 {
   "name": "module2",
-  "dependencies": {}
+  "dependencies": {
+    "external1" : "latest",
+    "external2" : "latest"
+  }
 }
