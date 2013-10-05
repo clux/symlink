@@ -1,6 +1,7 @@
 {
   "name": "module3",
   "dependencies": {
-    "module2": "latest"
+    "module2": "latest",
+    "global2" : "latest"
   }
 }

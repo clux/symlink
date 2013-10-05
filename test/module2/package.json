@@ -3,5 +3,8 @@
   "dependencies": {
     "external1" : "latest",
     "external2" : "latest"
+  },
+  "devDependencies": {
+    "global1" : "latest"
   }
 }
