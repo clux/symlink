@@ -10,6 +10,7 @@ var expected = [
   'test/module3 && npm link',
   'test/module1 && npm link module2',
   'test/module1 && npm link module3',
+  'test/module1 && npm install external2',
   'test/module1 && npm link'
 ];
 
