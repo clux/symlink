@@ -7,8 +7,11 @@ var join = require('path').join
   , cwd = process.cwd();
 
 var argv = require('optimist')
-  .usage('Usage: $0 -t -r repoFolder')
+  .usage('Usage: $0 [-td] -r repoFolder')
   .boolean('t')
+  .describe('t', 'link-tap')
+  .boolean('d')
+  .describe('d', 'dry-run')
   .demand(['r'])
   .describe('r', 'repoFolder')
   .argv;
@@ -78,6 +81,10 @@ sorted.forEach(function (n) {
   // npm link (to make this available to the modules with more dependencies)
   cmds.push(cd + 'npm link');
 });
+
+if (argv.d) { // dry run
+  return console.log(cmds);
+}
 
 // create one cp function cmd that execs and cbs to next in async series
 var execs = cmds.map(function (cmd) {

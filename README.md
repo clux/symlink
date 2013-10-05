@@ -134,5 +134,8 @@ NB: This is with the [tap] option enabled.
 
 If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
 
+## Try before you buy
+After cloning a bunch of node git repos, you can see how it would link these together first by running symlink with the dry-run `-d` flag.
+
 ## License
 MIT-Licensed. See LICENSE file for details.
