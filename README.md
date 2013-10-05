@@ -40,7 +40,9 @@ After cloning a bunch of node git repos, you can see how it would link these tog
 ## EXAMPLE BECAUSE WTF
 When I reinstall my linux, I git clone all my repos and let symlink figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;
 
+
 ```
+# NB: for readability the full paths have been shortened
 kjttks@clux ~/repos $ symlink -r . -g tap -d
 [
  "cd ./blog && npm install marked ecstatic promzard async browserify ejs",
@@ -124,8 +126,6 @@ kjttks@clux ~/repos $ symlink -r . -g tap -d
  "cd ./wrappers && npm link"
 ]
 ```
-
-NB: for readability, the full paths herein have been stripped:
 
 Without the `-d` flag, these commands would be executed in this order.
 You can see the most independent modules gets their missing dependencies installed first, then gets npm linked so the more requiring modules can npm link in these.
