@@ -24,118 +24,136 @@ symlink -r repoDir
 
 Once everything has been ordered, a bunch of child processes are executed in series from the order of least inclusion;
 
+- (globals `intersect` ownDeps).forEach (g) -> `npm link g`
 - ownDeps[m].forEach (d) -> `npm link d`
 - foreignDeps[m].forEach (d) -> `npm install d`
 - `npm link`
 
 I.e. link in all local dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
-## TAP
-If you'd like to link tap to all modules that have it specified in the package.json (instead of having it be installed at every module where it's listed as a foreign dependency) specify a `-t` flag before listing module paths.
-
-## EXAMPLE BECAUSE WTF
-Observe a dependency snapshot (of form {moduleName : [deps]}) of my active modules at writing time:
-
-```js
-{ autonomy: [ 'operators', 'tap' ],
-  combustion: [ 'optimist', 'confortable', 'fsx', 'tap', 'autonomy', 'operators' ],
-  confortable: [ 'tap' ],
-  deathmatch:
-   [ 'browserify',
-     'express',
-     'express-persona',
-     'fsx',
-     'interlude',
-     'logule',
-     'optimist',
-     'stylus',
-     'tournament',
-     'nano',
-     'tap' ],
-  decay: [ 'tap' ],
-  dye: [ 'tap', 'subset' ],
-  fsx: [],
-  interlude: [ 'autonomy', 'wrappers', 'subset', 'operators', 'tap' ],
-  logule: [ 'dye', 'autonomy', 'subset', 'confortable', 'tap' ],
-  operators: [ 'tap' ],
-  subset: [ 'tap' ],
-  symlink: [ 'interlude', 'async', 'optimist', 'tap' ],
-  'tap-pessimist': [ 'tap', 'logule' ],
-  topiary: [],
-  typr: [ 'tap' ],
-  wrappers: [ 'tap' ] }
-```
-
-symlink will figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;
-
-```js
-[ 'cd /home/clux/repos/confortable/ && npm link tap',
-  'cd /home/clux/repos/confortable/ && npm link',
-  'cd /home/clux/repos/decay/ && npm link tap',
-  'cd /home/clux/repos/decay/ && npm link',
-  'cd /home/clux/repos/fsx/ && npm link',
-  'cd /home/clux/repos/operators/ && npm link tap',
-  'cd /home/clux/repos/operators/ && npm link',
-  'cd /home/clux/repos/autonomy/ && npm link tap',
-  'cd /home/clux/repos/autonomy/ && npm link operators',
-  'cd /home/clux/repos/autonomy/ && npm link',
-  'cd /home/clux/repos/combustion/ && npm link tap',
-  'cd /home/clux/repos/combustion/ && npm link confortable',
-  'cd /home/clux/repos/combustion/ && npm link fsx',
-  'cd /home/clux/repos/combustion/ && npm link autonomy',
-  'cd /home/clux/repos/combustion/ && npm link operators',
-  'cd /home/clux/repos/combustion/ && npm install optimist',
-  'cd /home/clux/repos/combustion/ && npm link',
-  'cd /home/clux/repos/subset/ && npm link tap',
-  'cd /home/clux/repos/subset/ && npm link',
-  'cd /home/clux/repos/dye/ && npm link tap',
-  'cd /home/clux/repos/dye/ && npm link subset',
-  'cd /home/clux/repos/dye/ && npm link',
-  'cd /home/clux/repos/logule/ && npm link tap',
-  'cd /home/clux/repos/logule/ && npm link dye',
-  'cd /home/clux/repos/logule/ && npm link autonomy',
-  'cd /home/clux/repos/logule/ && npm link subset',
-  'cd /home/clux/repos/logule/ && npm link confortable',
-  'cd /home/clux/repos/logule/ && npm link',
-  'cd /home/clux/repos/tap-pessimist/ && npm link tap',
-  'cd /home/clux/repos/tap-pessimist/ && npm link logule',
-  'cd /home/clux/repos/tap-pessimist/ && npm link',
-  'cd /home/clux/repos/topiary/ && npm link',
-  'cd /home/clux/repos/typr/ && npm link tap',
-  'cd /home/clux/repos/typr/ && npm link',
-  'cd /home/clux/repos/wrappers/ && npm link tap',
-  'cd /home/clux/repos/wrappers/ && npm link',
-  'cd /home/clux/repos/interlude/ && npm link tap',
-  'cd /home/clux/repos/interlude/ && npm link autonomy',
-  'cd /home/clux/repos/interlude/ && npm link wrappers',
-  'cd /home/clux/repos/interlude/ && npm link subset',
-  'cd /home/clux/repos/interlude/ && npm link operators',
-  'cd /home/clux/repos/interlude/ && npm link',
-  'cd /home/clux/repos/deathmatch/ && npm link tap',
-  'cd /home/clux/repos/deathmatch/ && npm link fsx',
-  'cd /home/clux/repos/deathmatch/ && npm link interlude',
-  'cd /home/clux/repos/deathmatch/ && npm link logule',
-  'cd /home/clux/repos/deathmatch/ && npm install browserify',
-  'cd /home/clux/repos/deathmatch/ && npm install express',
-  'cd /home/clux/repos/deathmatch/ && npm install express-persona',
-  'cd /home/clux/repos/deathmatch/ && npm install optimist',
-  'cd /home/clux/repos/deathmatch/ && npm install stylus',
-  'cd /home/clux/repos/deathmatch/ && npm install tournament',
-  'cd /home/clux/repos/deathmatch/ && npm install nano',
-  'cd /home/clux/repos/deathmatch/ && npm link',
-  'cd /home/clux/repos/symlink/ && npm link tap',
-  'cd /home/clux/repos/symlink/ && npm link interlude',
-  'cd /home/clux/repos/symlink/ && npm install async',
-  'cd /home/clux/repos/symlink/ && npm install optimist',
-  'cd /home/clux/repos/symlink/ && npm link' ]
-```
-
-NB: This is with the [tap] option enabled.
-
-If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
+## Globally linked modules
+If you'd like to link, say, [tap](https://npmjs.org/package/tap) to all modules that have it specified in the package.json (instead of having it be installed at every module where it's listed as a foreign dependency) specify a `-g tap` flag. This flag can be specified many times for as many modules you'd like to link in.
 
 ## Try before you buy
 After cloning a bunch of node git repos, you can see how it would link these together first by running symlink with the dry-run `-d` flag.
+
+## EXAMPLE BECAUSE WTF
+When I reinstall my linux, I git clone all my repos and let symlink figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;
+
+```
+/home/clux/repos $ symlink -r . -d -g tap
+[
+ "cd /home/clux/repos/confortable && npm link tap",
+ "cd /home/clux/repos/confortable && npm link",
+ "cd /home/clux/repos/decay && npm link tap",
+ "cd /home/clux/repos/decay && npm link",
+ "cd /home/clux/repos/deusexlogin && npm install tape",
+ "cd /home/clux/repos/deusexlogin && npm link",
+ "cd /home/clux/repos/fsx && npm link",
+ "cd /home/clux/repos/icebreaker && npm install tape",
+ "cd /home/clux/repos/icebreaker && npm link",
+ "cd /home/clux/repos/irc-stream && npm link tap",
+ "cd /home/clux/repos/irc-stream && npm install irc",
+ "cd /home/clux/repos/irc-stream && npm link",
+ "cd /home/clux/repos/operators && npm link tap",
+ "cd /home/clux/repos/operators && npm link",
+ "cd /home/clux/repos/autonomy && npm link tap",
+ "cd /home/clux/repos/autonomy && npm link operators",
+ "cd /home/clux/repos/autonomy && npm link",
+ "cd /home/clux/repos/combustion && npm link tap",
+ "cd /home/clux/repos/combustion && npm link confortable",
+ "cd /home/clux/repos/combustion && npm link fsx",
+ "cd /home/clux/repos/combustion && npm link autonomy",
+ "cd /home/clux/repos/combustion && npm link operators",
+ "cd /home/clux/repos/combustion && npm install optimist",
+ "cd /home/clux/repos/combustion && npm link",
+ "cd /home/clux/repos/sdp-transform && npm link tap",
+ "cd /home/clux/repos/sdp-transform && npm link",
+ "cd /home/clux/repos/splitter && npm link tap",
+ "cd /home/clux/repos/splitter && npm link",
+ "cd /home/clux/repos/statesoftheworld && npm link tap",
+ "cd /home/clux/repos/statesoftheworld && npm link",
+ "cd /home/clux/repos/subset && npm link tap",
+ "cd /home/clux/repos/subset && npm link",
+ "cd /home/clux/repos/curvefever-stats && npm link tap",
+ "cd /home/clux/repos/curvefever-stats && npm link subset",
+ "cd /home/clux/repos/curvefever-stats && npm link confortable",
+ "cd /home/clux/repos/curvefever-stats && npm install request",
+ "cd /home/clux/repos/curvefever-stats && npm install cheerio",
+ "cd /home/clux/repos/curvefever-stats && npm install async",
+ "cd /home/clux/repos/curvefever-stats && npm link",
+ "cd /home/clux/repos/interlude && npm link tap",
+ "cd /home/clux/repos/interlude && npm link autonomy",
+ "cd /home/clux/repos/interlude && npm link subset",
+ "cd /home/clux/repos/interlude && npm link operators",
+ "cd /home/clux/repos/interlude && npm link",
+ "cd /home/clux/repos/symlink && npm link tap",
+ "cd /home/clux/repos/symlink && npm link interlude",
+ "cd /home/clux/repos/symlink && npm install async",
+ "cd /home/clux/repos/symlink && npm install optimist",
+ "cd /home/clux/repos/symlink && npm link",
+ "cd /home/clux/repos/topiary && npm link",
+ "cd /home/clux/repos/tournament && npm link tap",
+ "cd /home/clux/repos/tournament && npm link interlude",
+ "cd /home/clux/repos/tournament && npm link",
+ "cd /home/clux/repos/tournament-components && npm link tournament",
+ "cd /home/clux/repos/tournament-components && npm install tape",
+ "cd /home/clux/repos/tournament-components && npm link",
+ "cd /home/clux/repos/trials && npm link tap",
+ "cd /home/clux/repos/trials && npm link",
+ "cd /home/clux/repos/dye && npm link tap",
+ "cd /home/clux/repos/dye && npm link trials",
+ "cd /home/clux/repos/dye && npm link subset",
+ "cd /home/clux/repos/dye && npm link",
+ "cd /home/clux/repos/tub && npm link tap",
+ "cd /home/clux/repos/tub && npm link splitter",
+ "cd /home/clux/repos/tub && npm install dev-null",
+ "cd /home/clux/repos/tub && npm link",
+ "cd /home/clux/repos/typr && npm link tap",
+ "cd /home/clux/repos/typr && npm link",
+ "cd /home/clux/repos/logule && npm link tap",
+ "cd /home/clux/repos/logule && npm link dye",
+ "cd /home/clux/repos/logule && npm link autonomy",
+ "cd /home/clux/repos/logule && npm link subset",
+ "cd /home/clux/repos/logule && npm link confortable",
+ "cd /home/clux/repos/logule && npm link typr",
+ "cd /home/clux/repos/logule && npm link",
+ "cd /home/clux/repos/gu && npm link tap",
+ "cd /home/clux/repos/gu && npm link logule",
+ "cd /home/clux/repos/gu && npm install hot-reload",
+ "cd /home/clux/repos/gu && npm link",
+ "cd /home/clux/repos/cleverbot-irc && npm link dye",
+ "cd /home/clux/repos/cleverbot-irc && npm link gu",
+ "cd /home/clux/repos/cleverbot-irc && npm link irc-stream",
+ "cd /home/clux/repos/cleverbot-irc && npm link confortable",
+ "cd /home/clux/repos/cleverbot-irc && npm install levenshtein",
+ "cd /home/clux/repos/cleverbot-irc && npm install cleverbot-node",
+ "cd /home/clux/repos/cleverbot-irc && npm install suncalc",
+ "cd /home/clux/repos/cleverbot-irc && npm install irc-colors",
+ "cd /home/clux/repos/cleverbot-irc && npm link",
+ "cd /home/clux/repos/curvefever-bot && npm link tap",
+ "cd /home/clux/repos/curvefever-bot && npm link curvefever-stats",
+ "cd /home/clux/repos/curvefever-bot && npm link gu",
+ "cd /home/clux/repos/curvefever-bot && npm link confortable",
+ "cd /home/clux/repos/curvefever-bot && npm link",
+ "cd /home/clux/repos/wolfram-alpha && npm link tap",
+ "cd /home/clux/repos/wolfram-alpha && npm install request",
+ "cd /home/clux/repos/wolfram-alpha && npm install libxmljs",
+ "cd /home/clux/repos/wolfram-alpha && npm link",
+ "cd /home/clux/repos/wolfram-irc && npm link gu",
+ "cd /home/clux/repos/wolfram-irc && npm link irc-stream",
+ "cd /home/clux/repos/wolfram-irc && npm link confortable",
+ "cd /home/clux/repos/wolfram-irc && npm link wolfram-alpha",
+ "cd /home/clux/repos/wolfram-irc && npm link",
+ "cd /home/clux/repos/wrappers && npm link tap",
+ "cd /home/clux/repos/wrappers && npm link"
+]
+```
+
+Without the `-d` flag, these commands would be executed in this order.
+You can see the most independent modules gets their missing dependencies installed first, then gets npm linked so the more requiring modules can npm link in these.
+
+If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
 
 ## License
 MIT-Licensed. See LICENSE file for details.
