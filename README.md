@@ -22,14 +22,14 @@ symlink -r repoDir
 - figures out which deps are external
 - orders the modules so that linking can be in a safe order without having to query npmjs.org
 
-Once everything has been ordered, a bunch of child processes are executed in series from the order of least inclusion;
+Once everything has been ordered, a bunch of child processes are executed in series for each module from the order of least inclusion;
 
-- (globals `intersect` ownDeps).forEach (g) -> `npm link g`
-- ownDeps[m].forEach (d) -> `npm link d`
-- foreignDeps[m].forEach (d) -> `npm install d`
+- `npm link (globals intersect foreignDeps)`
+- `npm link (internalDeps)`
+- `npm install (foreignDeps)`
 - `npm link`
 
-I.e. link in all local dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
+I.e. link in all local global and internal dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## Globally linked modules
 If you'd like to link, say, [tap](https://npmjs.org/package/tap) to all modules that have it specified in the package.json (instead of having it be installed at every module where it's listed as a foreign dependency) specify a `-g tap` flag. This flag can be specified many times for as many modules you'd like to link in.
