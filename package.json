@@ -15,6 +15,9 @@
     "dependency",
     "analysis"
   ],
+  "scripts": {
+    "test": "tap test/"
+  },
   "bin": "symlink.js",
   "dependencies": {
     "interlude": "~1.0.1",
