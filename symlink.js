@@ -7,12 +7,12 @@ var join = require('path').join
   , cwd = process.cwd();
 
 var argv = require('optimist')
-  .usage('Usage: $0 [-td] -r repoFolder')
+  .usage('Usage: $0 [-d] -r repoDir [-g globals]')
   .describe('g', 'globally-link')
   .boolean('d')
   .describe('d', 'dry-run')
   .demand(['r'])
-  .describe('r', 'repoFolder')
+  .describe('r', 'repoDir')
   .argv;
 
 var deps = {}         // { module name -> [jsonDeps++jsonDevDeps] }

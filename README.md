@@ -15,10 +15,10 @@ npm install -g symlink
 symlink -r repoDir
 ```
 
-## WHAT DOES IT DO:
+## What it does
 
-- reads the `package.json` of each module and finds their `dependencies` ++ `devDependencies`
-- figures out which deps were given
+- reads the `package.json` of each module founds in `repoDir` and finds their `dependencies` ++ `devDependencies`
+- figures out which deps were exists locally
 - figures out which deps are external
 - orders the modules so that linking can be in a safe order without having to query npmjs.org
 
@@ -28,17 +28,10 @@ Once everything has been ordered, a bunch of child processes are executed in ser
 - `npm install (foreignDeps ∖ globals)`
 - `npm link`
 
-I.e. link in all local global and internal dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
+I.e. link in all local globally requested and internally available dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
-## Globally linked modules
-If you'd like to link, say, [tap](https://npmjs.org/package/tap) to all modules that have it specified in the package.json (instead of having it be installed at every module where it's listed as a foreign dependency) specify a `-g tap` flag. This flag can be specified many times for as many modules you'd like to link in.
-
-## Try before you buy
-After cloning a bunch of node git repos, you can see how it would link these together first by running symlink with the dry-run `-d` flag.
-
-## EXAMPLE BECAUSE WTF
+## Example
 When I reinstall my linux, I git clone all my repos and let symlink figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;
-
 
 ```
 # NB: for readability the full paths have been shortened
@@ -116,13 +109,19 @@ kjttks@clux ~/repos $ symlink -r . -g tap -d
  "cd ./wrappers && npm link tap",
  "cd ./wrappers && npm link"
 ]
-
 ```
 
-Without the `-d` flag, these commands would be executed in this order.
-You can see the most independent modules gets their missing dependencies installed first, then gets npm linked so the more requiring modules can npm link in these.
+Without the dry-run `-d` flag, these commands would be executed sequentially in this order.
+
+The most independent modules gets their missing dependencies installed first, then gets npm linked so the more requiring modules can npm link in these.
 
 If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can run sudo free too.
+
+## Globally linked modules
+If you want to use one globally available package everywhere, say [tap](https://npmjs.org/package/tap) for tests, then you can specify `-g tap` to `npm link tap` in all modules that has tap listed as a dependency.
+
+## Try before you buy
+After cloning a bunch of node git repos, you can see how it would link these together first by running symlink with the dry-run `-d` flag.
 
 ## License
 MIT-Licensed. See LICENSE file for details.
