@@ -8,7 +8,6 @@
 - find the process of relinking everything after os install tedious?
 
 If you answered YES to all the above, then this module is for you.
-Otherwise, it is most certainly not.
 
 ## Usage
 Install, then run in the directory containing all your repos that youd like to link together (will take all folders that contain a package.json)
@@ -21,14 +20,14 @@ symlink -r repoDir
 ## What it does
 
 - reads the `package.json` of each module founds in `repoDir` and finds their `dependencies` ++ `devDependencies`
-- figures out which deps were exists locally
+- figures out which deps exists locally
 - figures out which deps are external
-- orders the modules so that linking can be in a safe order without having to query npmjs.org
+- orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
 
 Once everything has been ordered, a bunch of child processes are executed in series for each module from the order of least inclusion;
 
-- `npm link ((globals ∩ foreignDeps) ∪ (internalDeps))`
-- `npm install (foreignDeps ∖ globals)`
+- `npm link ((globals ∩ externalDeps) ∪ (localDeps))`
+- `npm install (externalDeps ∖ globals)`
 - `npm link`
 
 I.e. link in all local globally requested and internally available dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
