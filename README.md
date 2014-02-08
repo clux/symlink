@@ -19,8 +19,8 @@ symlink -r repoDir
 
 ## What it does
 
-- reads the `package.json` of each module founds in `repoDir` and finds their `dependencies` ++ `devDependencies`
-- figures out which deps exists locally
+- reads the `package.json` of each module founds in `repoDir` and collects their `dependencies` and `devDependencies`
+- figures out which deps are local to `repoDir`
 - figures out which deps are external
 - orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
 
