@@ -20,8 +20,8 @@
   },
   "bin": "symlink.js",
   "dependencies": {
+    "async": "^0.9.0",
     "interlude": "~1.0.1",
-    "async": "~0.2.9",
     "optimist": "~0.6.0"
   },
   "devDependencies": {
