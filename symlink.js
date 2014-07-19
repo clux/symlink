@@ -81,22 +81,24 @@ sorted.forEach(function (n) {
 });
 
 if (argv.d) { // dry run
-  return console.log(JSON.stringify(cmds, null, " "));
+  console.log(JSON.stringify(cmds, null, " "));
 }
 
-// create one cp function cmd that execs and cbs to next in async series
-var execs = cmds.map(function (cmd) {
-  return function (cb) {
-    console.log(cmd);
-    cp.exec(cmd, function (error, stdout) {
-      console.log(stdout);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
-      cb(error);
-    });
-  };
-});
+else {
+  // create one cp function cmd that execs and cbs to next in async series
+  var execs = cmds.map(function (cmd) {
+    return function (cb) {
+      console.log(cmd);
+      cp.exec(cmd, function (error, stdout) {
+        console.log(stdout);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+        cb(error);
+      });
+    };
+  });
 
-// exec commands synchronously
-async.series(execs);
+  // exec commands synchronously
+  async.series(execs);
+}
