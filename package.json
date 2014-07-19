@@ -4,6 +4,7 @@
   "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
   "version": "0.2.4",
   "preferGlobal": true,
+  "stability": "unstable",
   "repository": {
     "type": "git",
     "url": "clux/symlink"
@@ -16,7 +17,7 @@
     "analysis"
   ],
   "scripts": {
-    "test": "tap test/"
+    "test": "$(npm bin)/nodeunit --reporter=verbose test/*.js"
   },
   "bin": "symlink.js",
   "dependencies": {
@@ -24,9 +25,7 @@
     "interlude": "~1.0.1",
     "optimist": "~0.6.0"
   },
-  "devDependencies": {
-    "tap": "~0.4.4"
-  },
+  "devDependencies": {},
   "bugs": {
     "url": "http://github.com/clux/symlink/issues"
   },

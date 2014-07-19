@@ -1,10 +1,9 @@
-var tap = require('tap')
-  , test = tap.test
-  , cp = require('child_process');
+var cp = require('child_process');
 
 var verify = function (t, flags, output) {
-  cp.exec('../symlink.js ' + flags, function (err, stdout, stderr) {
+  cp.exec('./symlink.js ' + flags, function (err, stdout, stderr) {
     if (err || stderr) {
+      console.error(err, stderr)
       t.equal(err, null, "err executing");
       t.equal(stderr, null, "err executing");
     }
@@ -18,12 +17,12 @@ var verify = function (t, flags, output) {
       });
       t.deepEqual(expected, output, "output deepEquals expected");
     }
-    t.end();
+    t.done();
   });
 };
 
-test("symlink-dry-run 0 globals", function (t) {
-  var flags = '-r . -d';
+exports.basic = function (t) {
+  var flags = '-r test/ -d';
   var output = [
     "test/module2 && npm install external1 external2 global1",
     "test/module2 && npm link",
@@ -35,10 +34,10 @@ test("symlink-dry-run 0 globals", function (t) {
     "test/module1 && npm link"
   ];
   verify(t, flags, output);
-});
+};
 
-test("symlink-dry-run 1 global", function (t) {
-  var flags = '-r . -d -g global1';
+exports.global = function (t) {
+  var flags = '-r test/ -d -g global1';
   var output = [
     "test/module2 && npm link global1",
     "test/module2 && npm install external1 external2",
@@ -51,10 +50,10 @@ test("symlink-dry-run 1 global", function (t) {
     "test/module1 && npm link"
   ];
   verify(t, flags, output);
-});
+};
 
-test("symlink-dry-run 2 globals", function (t) {
-  var flags = '-r . -d -g global1 -g global2';
+exports.globals = function (t) {
+  var flags = '-r test/ -d -g global1 -g global2';
   var output = [
     "test/module2 && npm link global1",
     "test/module2 && npm install external1 external2",
@@ -66,4 +65,4 @@ test("symlink-dry-run 2 globals", function (t) {
     "test/module1 && npm link"
   ];
   verify(t, flags, output);
-});
+};

@@ -1,7 +1,8 @@
 # symlink
-[![Build Status](https://secure.travis-ci.org/clux/symlink.png)](http://travis-ci.org/clux/symlink)
-[![Dependency Status](https://david-dm.org/clux/symlink.png)](https://david-dm.org/clux/symlink)
-[![unstable](http://hughsk.github.io/stability-badges/dist/unstable.svg)](http://nodejs.org/api/documentation.html#documentation_stability_index)
+[![npm status](http://img.shields.io/npm/v/symlink.svg)](https://www.npmjs.org/package/symlink)
+[![build status](https://secure.travis-ci.org/clux/symlink.svg)](http://travis-ci.org/clux/symlink)
+[![dependency status](https://david-dm.org/clux/symlink.svg)](https://david-dm.org/clux/symlink)
+[![unstable](http://img.shields.io/badge/stability-unstable-E5AE13.svg)](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
 - Have lots of personal node modules?
 - `npm link` them all together?
