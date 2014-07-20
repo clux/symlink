@@ -1,5 +1,6 @@
 0.3.0 / 2014-07-20
 ==================
+  * `-r` flag is removed, now assumed the only unnamed argument
   * Rewrite so it can be used as a library:
     - package.json location is now fully asynchronous
     - library simply works out the commands like a -d dryrun

@@ -16,7 +16,7 @@ Install, then run in the directory containing all your repos that youd like to l
 
 ```bash
 npm install -g symlink
-symlink -r repoDir
+symlink repoDir
 ```
 
 ## What it does
@@ -39,7 +39,7 @@ When I reinstall my linux, I git clone all my repos and let symlink figure out a
 
 ```
 # NB: for readability the full paths have been shortened
-kjttks@clux ~/repos $ symlink -r . -g tap -d
+kjttks@clux ~/repos $ symlink . -g tap -d
 [
  "cd ./blog && npm install marked ecstatic promzard async browserify ejs",
  "cd ./blog && npm link",
