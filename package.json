@@ -3,7 +3,6 @@
   "description": "npm link together local modules && npm install remaining dependencies",
   "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
   "version": "0.2.4",
-  "preferGlobal": true,
   "stability": "unstable",
   "repository": {
     "type": "git",
@@ -14,18 +13,24 @@
     "install",
     "npm",
     "dependency",
-    "analysis"
+    "management"
   ],
   "scripts": {
-    "test": "$(npm bin)/nodeunit --reporter=verbose test/*.js"
+    "test": "$(npm bin)/nodeunit --reporter=verbose test/*.js",
+    "instrument": "$(npm bin)/jscoverage lib",
+    "coverage": "SYMLINK_COV=1 $(npm bin)/nodeunit --reporter=lcov test/*.js",
+    "coveralls": "npm run coverage | coveralls"
   },
   "bin": "symlink.js",
+  "main": "index.js",
   "dependencies": {
     "async": "^0.9.0",
     "interlude": "~1.0.1",
     "optimist": "~0.6.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.1",
+    "jscoverage": "^0.5.5",
     "nodeunit": "^0.9.0"
   },
   "bugs": {

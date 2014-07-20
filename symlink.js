@@ -8,15 +8,13 @@ var argv = require('optimist')
   .describe('r', 'repoDir')
   .argv;
 
-var globals = argv.g ?
-  (Array.isArray(argv.g) ? argv.g : [argv.g]):
-  [];
+// can do multiple -g globX chains
+var globals = argv.g ? (Array.isArray(argv.g) ? argv.g : [argv.g]): []
 var dir = require('path').join(process.cwd(), argv.r);
-
 var cp = require('child_process');
 var async = require('async');
 
-require('./lib/symlink')(dir, globals, function (err, cmds) {
+require('./')(dir, globals, function (err, cmds) {
   if (err) {
     throw err;
   }
