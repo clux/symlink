@@ -2,6 +2,7 @@
 [![npm status](http://img.shields.io/npm/v/symlink.svg)](https://www.npmjs.org/package/symlink)
 [![build status](https://secure.travis-ci.org/clux/symlink.svg)](http://travis-ci.org/clux/symlink)
 [![dependency status](https://david-dm.org/clux/symlink.svg)](https://david-dm.org/clux/symlink)
+[![coverage status](http://img.shields.io/coveralls/clux/symlink.svg)](https://coveralls.io/r/clux/symlink)
 [![unstable](http://img.shields.io/badge/stability-unstable-E5AE13.svg)](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
 - Have lots of personal node modules?
