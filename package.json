@@ -21,7 +21,7 @@
     "coverage": "SYMLINK_COV=1 $(npm bin)/nodeunit --reporter=lcov test/*.js",
     "coveralls": "npm run coverage | coveralls"
   },
-  "bin": "symlink.js",
+  "bin": "bin.js",
   "main": "index.js",
   "dependencies": {
     "async": "^0.9.0",
