@@ -1,7 +1,8 @@
 var cp = require('child_process');
+var pth = process.env.SYMLINK_COV ? './symlink-cov.js' : './symlink.js';
 
 var verify = function (t, flags, output) {
-  cp.exec('./symlink.js ' + flags, function (err, stdout, stderr) {
+  cp.exec(pth + ' ' + flags, function (err, stdout, stderr) {
     if (err || stderr) {
       console.error(err, stderr)
       t.equal(err, null, "err executing");
