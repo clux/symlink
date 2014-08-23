@@ -6,8 +6,8 @@
 [![unstable](http://img.shields.io/badge/stability-unstable-E5AE13.svg)](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
 - Have lots of personal node modules?
-- `npm link` them all together?
-- find the process of relinking everything after os install tedious?
+- Do you `npm link` them together to ensure they all work with latest while developing?
+- Find the process of linking together multiple modules tedious? (fresh os install / new build environment checkout)
 
 If you answered YES to all the above, then this module is for you.
 
