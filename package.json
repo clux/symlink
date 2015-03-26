@@ -3,7 +3,6 @@
   "description": "npm link together local modules && npm install remaining dependencies",
   "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
   "version": "0.3.0",
-  "stability": "unstable",
   "repository": {
     "type": "git",
     "url": "clux/symlink"
@@ -25,7 +24,7 @@
   "main": "index.js",
   "dependencies": {
     "async": "^0.9.0",
-    "interlude": "~1.0.1",
+    "interlude": "~1.1.0",
     "optimist": "~0.6.0"
   },
   "devDependencies": {

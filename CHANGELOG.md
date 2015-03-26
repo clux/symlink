@@ -1,3 +1,7 @@
+1.0.0 / 2015-03-26
+==================
+  * Allow multiple input directories to be listed before flags
+
 0.3.0 / 2014-07-20
 ==================
   * `-r` flag is removed, now assumed the only unnamed argument

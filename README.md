@@ -3,7 +3,6 @@
 [![build status](https://secure.travis-ci.org/clux/symlink.svg)](http://travis-ci.org/clux/symlink)
 [![dependency status](https://david-dm.org/clux/symlink.svg)](https://david-dm.org/clux/symlink)
 [![coverage status](http://img.shields.io/coveralls/clux/symlink.svg)](https://coveralls.io/r/clux/symlink)
-[![unstable](http://img.shields.io/badge/stability-unstable-E5AE13.svg)](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
 - Have lots of personal node modules?
 - Do you `npm link` them together to ensure they all work with latest while developing?
@@ -16,12 +15,12 @@ Install, then run in the directory containing all your repos that youd like to l
 
 ```bash
 npm install -g symlink
-symlink repoDir
+symlink repoDir1 repoDir2 ..
 ```
 
 ## What it does
 
-- reads the `package.json` of each module founds in `repoDir` and collects their `dependencies` and `devDependencies`
+- reads the `package.json` of each module founds in the repo dirs and collects their `dependencies` and `devDependencies`
 - figures out which deps are local to `repoDir`
 - figures out which deps are external
 - orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
@@ -32,7 +31,7 @@ Once everything has been ordered, a bunch of child processes are executed in ser
 - `npm install (externalDeps ∖ globals)`
 - `npm link`
 
-I.e. link in all local globally requested and internally available dependencies, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
+I.e. link in all globally installed modules that were specified explicitly and the locally available dependencies in the directories, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## Example
 When I reinstall my linux, I git clone all my repos and let symlink figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;

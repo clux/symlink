@@ -1,19 +1,23 @@
 #!/usr/bin/env node
 var argv = require('optimist')
-  .usage('Usage: $0 repoDir [-d] [-g globals]')
+  .usage('Usage: $0 repoDirs [-d] [-g globals]')
   .describe('g', 'globally-link')
   .boolean('d')
   .describe('d', 'dry-run')
   .demand(1)
   .argv;
 
+// can do multiple unnamed arguments for directories relative to cwd
+var join =  require('path').join;
+var dirs = argv._.map(function (dir) {
+  return join(process.cwd(), dir);
+});
 // can do multiple -g globX chains
 var globals = argv.g ? (Array.isArray(argv.g) ? argv.g : [argv.g]): []
-var dir = require('path').join(process.cwd(), argv._[0]);
 var cp = require('child_process');
 var async = require('async');
 
-require('./')(dir, globals, function (err, cmds) {
+require('./')(dirs, globals, function (err, cmds) {
   if (err) {
     throw err;
   }

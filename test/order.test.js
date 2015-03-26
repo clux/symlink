@@ -1,7 +1,8 @@
 var symlink = require('../');
+var join = require('path').join;
 
-var verify = function (t, globals, output) {
-  symlink(__dirname, globals, function (err, cmds) {
+var verify = function (t, globals, output, dirs) {
+  symlink(dirs, globals, function (err, cmds) {
     if (err) {
       t.equal(err, null);
     }
@@ -17,7 +18,7 @@ var verify = function (t, globals, output) {
 };
 
 exports.basic = function (t) {
-  // symlink -r test/ -d
+  // symlink test/ -d
   var output = [
     "test/module2 && npm install external1 external2 global1",
     "test/module2 && npm link",
@@ -28,11 +29,11 @@ exports.basic = function (t) {
     "test/module1 && npm install external2",
     "test/module1 && npm link"
   ];
-  verify(t, [], output);
+  verify(t, [], output, [__dirname]);
 };
 
 exports.global = function (t) {
-  // symlink -r test/ -d -g global1
+  // symlink test/ -d -g global1
   var output = [
     "test/module2 && npm link global1",
     "test/module2 && npm install external1 external2",
@@ -44,11 +45,11 @@ exports.global = function (t) {
     "test/module1 && npm install external2",
     "test/module1 && npm link"
   ];
-  verify(t, ['global1'], output);
+  verify(t, ['global1'], output, [__dirname]);
 };
 
 exports.globals = function (t) {
-  // symlink -r test/ -d -g global1 -g global2
+  // symlink test/ -d -g global1 -g global2
   var output = [
     "test/module2 && npm link global1",
     "test/module2 && npm install external1 external2",
@@ -59,5 +60,30 @@ exports.globals = function (t) {
     "test/module1 && npm install external2",
     "test/module1 && npm link"
   ];
-  verify(t, ['global1', 'global2'], output);
+  verify(t, ['global1', 'global2'], output, [__dirname]);
+};
+
+exports.multidir = function (t) {
+  // symlink test/ test/extradir1 test/extradir2 -d
+  var output = [
+    'test/module2 && npm install external1 external2 global1',
+    'test/module2 && npm link',
+    'test/module3 && npm link module2',
+    'test/module3 && npm install global2',
+    'test/module3 && npm link',
+    'test/module1 && npm link module2 module3',
+    'test/module1 && npm install external2',
+    'test/module1 && npm link',
+    'test/extradir2/module5 && npm link module2',
+    'test/extradir2/module5 && npm link',
+    'test/extradir1/module4 && npm link module5',
+    'test/extradir1/module4 && npm link',
+  ];
+
+  var dirs = [
+    __dirname,
+    join(__dirname, 'extradir1'),
+    join(__dirname, 'extradir2')
+  ];
+  verify(t, [], output, dirs);
 };
