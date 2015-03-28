@@ -1,3 +1,7 @@
+1.0.1 / 2015-03-28
+==================
+  * Errors from library use are now propagated correctly via callback
+
 1.0.0 / 2015-03-26
 ==================
   * Allow multiple input directories to be listed before flags
