@@ -8,16 +8,15 @@
     "url": "clux/symlink"
   },
   "keywords": [
-    "link",
-    "install",
-    "npm",
     "dependency",
-    "management"
+    "development",
+    "repository",
+    "install"
   ],
   "scripts": {
-    "test": "$(npm bin)/nodeunit --reporter=verbose test/*.js",
-    "instrument": "$(npm bin)/jscoverage lib",
-    "coverage": "SYMLINK_COV=1 $(npm bin)/nodeunit --reporter=lcov test/*.js",
+    "test": "nodeunit --reporter=verbose test/*.js",
+    "precoverage": "jscoverage lib",
+    "coverage": "SYMLINK_COV=1 nodeunit --reporter=lcov test/*.js",
     "coveralls": "npm run coverage | coveralls"
   },
   "bin": "bin.js",
