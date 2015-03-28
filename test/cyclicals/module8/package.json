@@ -1,0 +1,6 @@
+{
+  "name": "module8",
+  "dependencies": {
+    "module6": "latest"
+  }
+}
