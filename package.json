@@ -25,7 +25,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "interlude": "~1.1.0",
-    "optimist": "~0.6.0"
+    "yargs": "^3.6.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.1",

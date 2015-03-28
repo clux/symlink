@@ -1,10 +1,17 @@
 #!/usr/bin/env node
-var argv = require('optimist')
-  .usage('Usage: $0 repoDirs [-d] [-g globals]')
-  .describe('g', 'globally-link')
-  .boolean('d')
-  .describe('d', 'dry-run')
+var argv = require('yargs')
+  .usage('Usage: symlink <repoDirs> [options]')
   .demand(1)
+  .example('symlink ./repos')
+  .example('symlink ./repos -g coveralls -g nodeunit')
+  .alias('d', 'dry-run')
+  .describe('d', 'Print the commands to be executed and exit')
+  .boolean('d')
+  .alias('g', 'global')
+  .describe('g', 'globally installed module to be linked')
+  .array('g') // NB: will be unset if not used (default strings are ugly)
+  .alias('h', 'help')
+  .help('h')
   .argv;
 
 // can do multiple unnamed arguments for directories relative to cwd
@@ -12,14 +19,13 @@ var join =  require('path').join;
 var dirs = argv._.map(function (dir) {
   return join(process.cwd(), dir);
 });
-// can do multiple -g globX chains
-var globals = argv.g ? (Array.isArray(argv.g) ? argv.g : [argv.g]): []
 var cp = require('child_process');
 var async = require('async');
 
-require('./')(dirs, globals, function (err, cmds) {
+require('./')(dirs, argv.g || [], function (err, cmds) {
   if (err) {
-    throw err;
+    console.error(err.message);
+    process.exit(1);
   }
 
   if (argv.d) { // dry run
@@ -32,15 +38,18 @@ require('./')(dirs, globals, function (err, cmds) {
         console.log(cmd);
         cp.exec(cmd, function (error, stdout) {
           console.log(stdout);
-          if (error !== null) {
-            console.log('exec error: ' + error);
-          }
           cb(error);
         });
       };
     });
 
     // exec commands synchronously
-    async.series(execs);
+    async.series(execs, function (err) {
+      if (err) {
+        console.error(err.message);
+        process.exit(1);
+      }
+      process.exit(0);
+    });
   }
 });
