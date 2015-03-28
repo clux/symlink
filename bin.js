@@ -14,4 +14,9 @@ var argv = require('yargs')
   .help('h')
   .argv;
 
+process.on('uncaughtException', function (err) {
+  console.error(err.message);
+  process.exit(1);
+});
+
 require('./lib/cli').run(argv);
