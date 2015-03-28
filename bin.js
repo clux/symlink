@@ -14,9 +14,10 @@ var argv = require('yargs')
   .help('h')
   .argv;
 
-process.on('uncaughtException', function (err) {
-  console.error(err.message);
-  process.exit(1);
+require('./lib/cli').run(argv, function (err) {
+  if (err) {
+    console.error('symlink:', err.message);
+    process.exit(1);
+  }
+  process.exit(0);
 });
-
-require('./lib/cli').run(argv);
