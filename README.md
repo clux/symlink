@@ -11,34 +11,34 @@
 If you answered YES to all the above, then this module is for you.
 
 ## Usage
-Install, then run in the directory containing all your repos that youd like to link together (will take all folders that contain a package.json)
+Install, then give it a set of directories containing packages that you would like to link together (will take all subfolders that contain a package.json).
 
 ```bash
 npm install -g symlink
-symlink repoDir1 repoDir2 ..
+symlink repoDir --dry-run
 ```
 
 ## What it does
 
-- reads the `package.json` of each module founds in the repo dirs and collects their `dependencies` and `devDependencies`
-- figures out which deps are local to `repoDir`
-- figures out which deps are external
+- reads the `package.json` of each module founds in the given directory and collects their `dependencies` and `devDependencies`
+- figures out which deps are local (in one of the repoDirs)
+- figures out which deps are external (complement)
 - orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
 
 Once everything has been ordered, a bunch of child processes are executed in series for each module from the order of least inclusion;
 
-- `npm link ((globals ∩ externalDeps) ∪ (localDeps))`
+- `npm link (localDeps) ∪ ((globals ∩ externalDeps))`
 - `npm install (externalDeps ∖ globals)`
 - `npm link`
 
-I.e. link in all globally installed modules that were specified explicitly and the locally available dependencies in the directories, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
+I.e. link in all locally available dependencies + extenal globals that were requested explicitly, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## Example
 When I reinstall my linux, I git clone all my repos and let symlink figure out a safe order of commands and perform the following list of actions sequentially via `child_process`;
 
 ```
 # NB: for readability the full paths have been shortened
-kjttks@clux ~/repos $ symlink . -g tap -d
+kjttks@clux ~/repos $ symlink . --global tap --dry-run
 [
  "cd ./blog && npm install marked ecstatic promzard async browserify ejs",
  "cd ./blog && npm link",
@@ -114,7 +114,7 @@ kjttks@clux ~/repos $ symlink . -g tap -d
 ]
 ```
 
-Without the dry-run `-d` flag, these commands would be executed sequentially in this order.
+Without the dry-run flag, these commands would be executed sequentially in this order.
 
 The most independent modules gets their missing dependencies installed first, then gets npm linked so the more requiring modules can npm link in these.
 
@@ -122,9 +122,6 @@ If you have a local/chowned install of node (such that creating links to globall
 
 ## Globally linked modules
 If you want to use one globally available package everywhere, say [tap](https://npmjs.org/package/tap) for tests, then you can specify `-g tap` to `npm link tap` in all modules that has tap listed as a dependency.
-
-## Try before you buy
-After cloning a bunch of node git repos, you can see how it would link these together first by running symlink with the dry-run `-d` flag.
 
 ## License
 MIT-Licensed. See LICENSE file for details.
