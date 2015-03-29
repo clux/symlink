@@ -1,5 +1,13 @@
+2.0.0 / 2015-03-28
+=================
+  * Dry run flag removed. Dry run is now the default.
+  * Execute flag added `-e` or `--execute`.
+  * Perform linking with either:
+   1. `symlink repoDirs | sh`
+   2. `symlink repoDirs --execute` (will log a little more)
+
 1.1.0 / 2015-03-28
-==================
+=================
   * Swap optimist for yargs and improve command line usage
   * Errors from child_process calls in CLI now result in non-zero return code
 
