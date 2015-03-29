@@ -41,7 +41,7 @@ symlink repoDir --execute
 ```
 
 ## Example
-Linking together the related tournament modules from [clux](https://github.com/clux)'s repositories, to ensure they all work together:
+Linking together the related tournament modules from [clux](https://github.com/clux?tab=repositories)'s repositories, to ensure they all work together:
 
 NB: for readability the full paths have been shortened
 
