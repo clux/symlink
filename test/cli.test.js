@@ -1,14 +1,12 @@
 var cli = require('../').cli;
 var fs = require('fs');
-var async = require('async');
-var cp = require('child_process');
 
 exports.enoent = function (t) {
   var argv = {
     _ : [ './test/missing_dir' ]
   };
 
-  cli.run(argv, function (err) {
+  cli(argv, function (err) {
     t.ok(/ENOENT/.test(err), "ENOENT exception from cli");
     t.done();
   });
@@ -18,7 +16,7 @@ exports.ecyclical = function (t) {
   var argv = {
     _ : [ './test/cyclicals' ]
   };
-  cli.run(argv, function (err) {
+  cli(argv, function (err) {
     t.ok(/cannot link cyclically dep/.test(err), "cyclical deps");
     t.done();
   });
@@ -28,21 +26,23 @@ exports.ecyclical = function (t) {
 exports.dryRun = function (t) {
   var argv = {
     _ : [ './test/ok' ],
-    d: true
   };
 
-  cli.run(argv, function (err) {
+  cli(argv, function (err) {
     t.ok(!err, "no error on dry run");
     t.done();
   });
 };
 
 exports.executePass = function (t) {
+  // NB: it's a bit lucky that this works on travis
+  // thankfully they have a local prefix under /home/travis/.nvm/v0.X.X/..
   var argv = {
     _ : [ './test/ok' ],
+    e: true
   };
 
-  cli.run(argv, function (clierr) {
+  cli(argv, function (clierr) {
     t.ok(!clierr, "execute did not throw");
     // verify that linking actually occurred
     fs.lstat('./test/ok/parent/node_modules/dep', function (err, stat) {
