@@ -89,7 +89,5 @@ Test dependencies are often the same everywhere, and, to save querying npmjs, yo
 
 In the example above, every module that uses `jscoverage`, `nodeunit` or `coveralls` will get the relevant modules linked in.
 
-In the example above, `nodeunit`, `jscoverage`, and `coveralls` all use the same, globally installed version (less querying of npmjs).
-
 ## License
 MIT-Licensed. See LICENSE file for details.
