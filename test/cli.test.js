@@ -1,5 +1,7 @@
 var cli = require('../').cli;
-
+var fs = require('fs');
+var async = require('async');
+var cp = require('child_process');
 
 exports.enoent = function (t) {
   var argv = {
@@ -22,12 +24,10 @@ exports.ecyclical = function (t) {
   });
 };
 
-
-/*
-harder to handle non failures..
+// success cases (thes log a bit)
 exports.dryRun = function (t) {
   var argv = {
-    _ : [ './test' ],
+    _ : [ './test/ok' ],
     d: true
   };
 
@@ -35,7 +35,20 @@ exports.dryRun = function (t) {
     t.ok(!err, "no error on dry run");
     t.done();
   });
-
-  t.done();
 };
-*/
+
+exports.executePass = function (t) {
+  var argv = {
+    _ : [ './test/ok' ],
+  };
+
+  cli.run(argv, function (clierr) {
+    t.ok(!clierr, "execute did not throw");
+    // verify that linking actually occurred
+    fs.lstat('./test/ok/parent/node_modules/dep', function (err, stat) {
+      t.ok(!err, "could get stat of link");
+      t.ok(stat.isSymbolicLink(), "dep linked from parent");
+      t.done();
+    });
+  });
+};

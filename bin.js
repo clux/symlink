@@ -14,11 +14,10 @@ var argv = require('yargs')
   .help('h')
   .argv;
 
-require('./lib/cli').run(argv, function (err, res) {
+require('./lib/cli').run(argv, function (err) {
   if (err) {
-    console.error('symlink:', err.message);
+    console.error(err.message);
     process.exit(1);
   }
-  //console.log(res)
   process.exit(0);
 });
