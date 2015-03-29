@@ -13,7 +13,7 @@ If you answered YES to all the above, then this module is for you.
 ## Usage
 Install, then give it a set of directories containing packages that you would like to link together (will parse all immediate subdirectories containing a package.json).
 
-```bash
+```sh
 npm install -g symlink
 symlink repoDir # prints a list of commands
 ```
@@ -43,8 +43,9 @@ symlink repoDir --execute
 ## Example
 Linking together the related tournament modules from [clux](https://github.com/clux)'s repositories, to ensure they all work together:
 
-```
-# NB: for readability the full paths have been shortened
+NB: for readability the full paths have been shortened
+
+```sh
 clux@kjttks ~/trn $ symlink . -g nodeunit -g jscoverage -g nodeunit
 cd tournament && npm link nodeunit jscoverage coveralls
 cd tournament && npm install interlude
