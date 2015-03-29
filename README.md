@@ -18,21 +18,6 @@ npm install -g symlink
 symlink repoDir # prints a list of commands
 ```
 
-## What it does
-
-- reads the `package.json` of each module founds in the given directory and collects their `dependencies` and `devDependencies`
-- figures out which deps are local (present on one of the repoDirs)
-- figures out which deps are external (complement)
-- orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
-
-Once everything has been ordered, a bunch of commands are generated for each module from the order of least inclusion;
-
-- `npm link (localDeps) ∪ ((globals ∩ externalDeps))`
-- `npm install (externalDeps ∖ globals)`
-- `npm link`
-
-I.e. link in all locally available dependencies + extenal globals that were requested explicitly, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
-
 ## Execute
 To execute these commands in series run symlink with the `--execute` flag (to get a log per command) or pipe to `sh` for hardcore mode.
 
@@ -84,6 +69,21 @@ $ kjttks@clux ~/repos $ !! | sh
 The most independent modules (tournament) gets their missing dependencies installed first, then gets npm linked so the more requiring modules (specific implementations) can npm link in these.
 
 If you have a local/chowned install of node (such that creating links to globally installed modules can be done sans-sudo) then `symlink` can execute sudo free too.
+
+## What it does
+
+- reads the `package.json` of each module founds in the given directory and collects their `dependencies` and `devDependencies`
+- figures out which deps are local (present on one of the repoDirs)
+- figures out which deps are external (complement)
+- orders the modules so that linking can be in a safe order without having to query npmjs.org more than necessary
+
+Once everything has been ordered, a bunch of commands are generated for each module from the order of least inclusion;
+
+- `npm link (localDeps) ∪ ((globals ∩ externalDeps))`
+- `npm install (externalDeps ∖ globals)`
+- `npm link`
+
+I.e. link in all locally available dependencies + extenal globals that were requested explicitly, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## Globally linked modules
 Test dependencies are often the same everywhere, and, to save querying npmjs, you could just give them the version you have installed (provided it is compatible):
