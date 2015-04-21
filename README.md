@@ -15,18 +15,18 @@ Install, then give it a set of directories containing packages that you would li
 
 ```sh
 npm install -g symlink
-symlink repoDir # prints a list of commands
+symlink repoDir # prints a list of commands that CAN be executed
 ```
 
 ## Execute
-To execute these commands in series run symlink with the `--execute` flag (to get a log per command) or pipe to `sh` for hardcore mode.
+To execute these commands in series run symlink by either piping to `sh` if pipes are convenient for your use case, or use the `--execute` flag which also gives you one log per command.
 
 ```sh
 symlink repoDir --execute
 ```
 
 ## Example
-Linking together the related tournament modules from [clux](https://github.com/clux?tab=repositories)'s repositories, to ensure they all work together:
+Linking together the related tournament modules from [clux](https://github.com/clux?tab=repositories)'s repositories, to ensure they all work together, and all get the same test frameworks (though that's mostly just convenience):
 
 NB: for readability the full paths have been shortened
 
@@ -86,7 +86,7 @@ Once everything has been ordered, a bunch of commands are generated for each mod
 I.e. link in all locally available dependencies + extenal globals that were requested explicitly, install the rest, then link the module itself so the modules with more inclusions can safely link the module in.
 
 ## Globally linked modules
-Test dependencies are often the same everywhere, and, to save querying npmjs, you could just give them the version you have installed (provided it is compatible):
+Test dependencies are often the same everywhere, and, to save querying npmjs, you could just give them the version you have installed (provided it is compatible, and installed globally):
 
 In the example above, every module that uses `jscoverage`, `nodeunit` or `coveralls` will get the relevant modules linked in.
 
