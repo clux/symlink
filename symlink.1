@@ -1,0 +1,66 @@
+.TH "SYMLINK" "1" "November 2015" "" ""
+.SH "NAME"
+\fBsymlink\fR
+.P
+Symlink \fBnode\fP repositories together as quickly as possible\.
+.SH SYNOPSIS
+.P
+\fBsymlink [OPTION]\.\.\. repoDir\.\.\fP
+.SH DESCRIPTION
+.P
+Links together all repositories using \fBnpm link\fP after having fetched the smallest amount of dependencies using \fBnpm install\fP\|\.
+.P
+Performs dependency analysis to ensure the least dependent modules are made available via \fBnpm link\fP first\.
+.SH OPTIONS
+.P
+\fB\-g,\-\-global\fP    Globally installed module to be linked
+.P
+\fB\-e,\-\-execute\fP    Execute commands \- same as piping through \fBsh\fP
+.SH EXAMPLES
+.P
+See how a set of repositories would be linked together
+.P
+\fBsymlink repos\fP
+.P
+Actually run the set of commands
+.P
+\fBsymlink repos | sh\fP
+.P
+Reuse large globally installed modules if you know what you are doing
+.P
+\fBsymlink repos \-g gulp\fP
+.SH INSTALLATION
+.P
+Install globally through npm
+.P
+\fBnpm install \-g symlink\fP
+.SH ALGORITHM
+.P
+There is an analysis step:
+.RS 0
+.IP \(bu 2
+read \fBpackage\.json\fP of each module in the given directory/directories and collects \fBdependencies\fP + \fBdevDependencies\fP
+.IP \(bu 2
+finds the \fBlocal\fP ones (found in given directories)
+.IP \(bu 2
+finds the \fBexternal\fP ones (complement)
+.IP \(bu 2
+orders the modules by least inclusion
+
+.RE
+.P
+Then the execution step for each module (by least inclusion):
+.RS 0
+.IP \(bu 2
+\fBnpm link (localDeps) ∪ ((globals ∩ externalDeps))\fP
+.IP \(bu 2
+\fBnpm install (externalDeps ∖ globals)\fP
+.IP \(bu 2
+\fBnpm link\fP
+
+.RE
+.P
+This ensures your repository directories are all linked together\.
+.SH BUGS
+.P
+Please report bugs at \fIhttps://github\.com/clux/symlink/issues\fR

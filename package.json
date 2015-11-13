@@ -17,8 +17,10 @@
     "test": "nodeunit --reporter=verbose test/*.js",
     "precoverage": "jscoverage lib",
     "coverage": "SYMLINK_COV=1 nodeunit --reporter=lcov test/*.js",
-    "coveralls": "npm run coverage | coveralls"
+    "coveralls": "npm run coverage | coveralls",
+    "man": "marked-man manpage.md -o symlink.1"
   },
+  "man": "symlink.1",
   "bin": "bin.js",
   "main": "index.js",
   "dependencies": {
