@@ -1,3 +1,7 @@
+2.1.0 / 2015-11-XX
+=================
+  * Add a man page
+
 2.0.0 / 2015-03-28
 =================
   * Dry run flag removed. Dry run is now the default.

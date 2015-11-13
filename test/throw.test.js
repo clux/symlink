@@ -18,13 +18,12 @@ exports.cyclical = function (t) {
 
 exports.baddir = function (t) {
   // symlink test/noent -d
-  var expct = "ENOENT, readdir '/home/clux/repos/symlink/test/noent'";
   symlink([ join(__dirname, 'noent') ], [], function (err, cmds) {
     if (!err) {
       t.ok(false, "error was not set");
     }
     if (err) {
-      t.equal(err.message.slice(0, 16), expct.slice(0, 16), "expected error");
+      t.equal(err.message.slice(0, 6), "ENOENT", "expected error");
       t.equal(cmds, undefined, "no cmds output");
     }
     t.done();

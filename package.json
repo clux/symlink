@@ -17,19 +17,17 @@
     "test": "nodeunit --reporter=verbose test/*.js",
     "precoverage": "jscoverage lib",
     "coverage": "SYMLINK_COV=1 nodeunit --reporter=lcov test/*.js",
-    "coveralls": "npm run coverage | coveralls",
     "man": "marked-man manpage.md -o symlink.1"
   },
   "man": "symlink.1",
   "bin": "bin.js",
   "main": "index.js",
   "dependencies": {
-    "async": "^0.9.0",
+    "async": "^1.5.0",
     "interlude": "~1.1.0",
     "yargs": "^3.6.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.1",
     "jscoverage": "^0.5.5",
     "nodeunit": "^0.9.0"
   },
