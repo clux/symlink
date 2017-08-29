@@ -1,7 +1,7 @@
 {
   "name": "symlink",
   "description": "npm link together local modules && npm install remaining dependencies",
-  "author": "Eirik Albrigtsen <analsandblaster@gmail.com>",
+  "author": "Eirik Albrigtsen <sszynrae@gmail.com>",
   "version": "2.1.0",
   "repository": {
     "type": "git",
